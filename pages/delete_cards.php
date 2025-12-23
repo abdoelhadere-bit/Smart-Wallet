@@ -13,7 +13,7 @@ if(isset($_GET['id'])){
 
         $sql = $pdo->prepare("DELETE FROM cards WHERE id = ?");
         $sql->execute([$id]);
-        header('Location: cars.php');
+        header('Location: cards.php');
         exit;
     }catch(PDOexception $e){
         die("Erreur lors du seppression: " .$e->getMessage());

@@ -19,6 +19,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                       incomes (montant, `dates`, decription, category, user_id, card_id) 
                                       VALUES (?, ?, ?, ?, ?, ?)");
                 $sql->execute([$montant, $date, $description, $category, $user_id, $card_id]);
+                $sqlBudget = $pdo->prepare("UPDATE cards SET current_balance = current_balance + ? WHERE id = ? AND user_id = ?");
+                $sqlBudget->execute([$montant, $card_id, $user_id]);
                 header('Location: incomes.php');
                 exit;
             }
@@ -50,6 +52,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $sql = $pdo->prepare("INSERT INTO expenses (montant, `dates`, decription, category, user_id, card_id) VALUES (?, ?, ?, ?, ?, ?)");
                 $sql->execute([$montant, $date, $description, $category, $user_id, $card_id]);
 
+                $sqlBudget = $pdo->prepare("UPDATE cards SET current_balance = current_balance - ? WHERE id = ? AND user_id = ?");
+                $sqlBudget->execute([$montant, $card_id, $user_id]);
                 $sqlBudget = $pdo->prepare("INSERT INTO budget_limits ()");
                  // $_SESSION['error'] = "Vous pouvez pas dépasser la limite";
                 header('Location: expenses.php');
